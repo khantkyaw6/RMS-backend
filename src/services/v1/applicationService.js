@@ -1,3 +1,4 @@
+const { deleteFile } = require('../../helpers/fileHelper');
 const {
 	ApplicationModel,
 	WorkExperienceModel,
@@ -15,7 +16,7 @@ const applicationService = {
 		'working_exp',
 		'skills',
 	],
-	index: async (req) => {
+	index: async () => {
 		try {
 			const applications = await ApplicationModel.find({
 				isDeleted: false,
@@ -173,6 +174,37 @@ const applicationService = {
 			return {
 				status: 200,
 				message: 'Application Deleted Successfully',
+			};
+		} catch (error) {
+			throw new Error(error);
+		}
+	},
+	upload: async (req) => {
+		try {
+			const application = await ApplicationModel.findById(req.params.id);
+
+			if (!application) {
+				throw new Error('Application not found!');
+			}
+			let profileImage = req.body.image;
+			if (req.file) {
+				profileImage = req.file.path.replace('\\', '/');
+			}
+			if (!profileImage) {
+				throw new Error('No file picked');
+			}
+
+			if (application.image && application.image != profileImage) {
+				deleteFile(application.image);
+			}
+
+			application.image = profileImage;
+			const result = await application.save();
+
+			return {
+				status: 200,
+				message: 'Profile Upload Successfully',
+				data: result,
 			};
 		} catch (error) {
 			throw new Error(error);

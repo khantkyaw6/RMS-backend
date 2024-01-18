@@ -44,6 +44,16 @@ const applicationController = {
 			})
 			.catch((err) => next(err));
 	},
+	upload: async (req, res, next) => {
+		applicationService
+			.upload(req)
+			.then((data) => {
+				responseMessage(res, data.message, data.data);
+			})
+			.catch((err) => {
+				next(err);
+			});
+	},
 };
 
 module.exports = applicationController;

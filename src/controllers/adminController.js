@@ -1,9 +1,47 @@
+const responseMessage = require('../helpers/responseMessageHelper');
+const adminService = require('../services/v1/adminService');
+
 const adminController = {
-	index: async () => {},
-	store: async () => {},
-	show: async () => {},
-	update: async () => {},
-	delete: async () => {},
+	index: async (_req, res, next) => {
+		adminService
+			.index()
+			.then((data) => {
+				responseMessage(res, data.message, data.data);
+			})
+			.catch((err) => next(err));
+	},
+	store: async (req, res, next) => {
+		adminService
+			.store(req)
+			.then((data) => {
+				responseMessage(res, data.message, data.data);
+			})
+			.catch((err) => next(err));
+	},
+	show: async (req, res, next) => {
+		adminService
+			.show(req)
+			.then((data) => {
+				responseMessage(res, data.message, data.data);
+			})
+			.catch((err) => next(err));
+	},
+	update: async (req, res, next) => {
+		adminService
+			.update(req)
+			.then((data) => {
+				responseMessage(res, data.message, data.data);
+			})
+			.catch((err) => next(err));
+	},
+	delete: async (req, res, next) => {
+		adminService
+			.delete(req)
+			.then((data) => {
+				responseMessage(res, data.message, data.data);
+			})
+			.catch((err) => next(err));
+	},
 };
 
 module.exports = adminController;
