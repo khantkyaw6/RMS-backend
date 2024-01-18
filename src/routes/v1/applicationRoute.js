@@ -9,6 +9,6 @@ router
 	.route('/:id')
 	.get(applicationController.show)
 	.put(applicationController.update)
-	.delete(applicationController.delete);
+	.post(applicationController.delete);
 
 module.exports = router;
