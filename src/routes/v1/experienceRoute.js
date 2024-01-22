@@ -1,14 +1,15 @@
 const router = require('express').Router();
 const experienceController = require('../../controllers/experienceController');
+const authMiddleware = require('../../middlewares/authMiddleware');
 
 router
 	.route('/')
-	.get(experienceController.index)
-	.post(experienceController.store);
+	.get(authMiddleware, experienceController.index)
+	.post(authMiddleware, experienceController.store);
 
 router
 	.route('/:id')
-	.put(experienceController.update)
-	.delete(experienceController.delete);
+	.put(authMiddleware, experienceController.update)
+	.delete(authMiddleware, experienceController.delete);
 
 module.exports = router;
