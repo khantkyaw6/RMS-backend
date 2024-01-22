@@ -19,10 +19,11 @@ const applicationService = {
 			const applications = await ApplicationModel.find({
 				isDeleted: false,
 			})
-				.select(applicationService.attributes)
-				.populate('working_exp');
-
-			console.log(applications);
+				.populate(
+					'working_exp',
+					'companyName startDate endDate position'
+				)
+				.select(applicationService.attributes);
 
 			applications.forEach((application) => {
 				if (!application.working_exp) {
@@ -32,7 +33,7 @@ const applicationService = {
 
 			return {
 				status: 200,
-				message: 'Retrived Applications list succesfully',
+				message: 'Get Applications list successfully',
 				data: applications,
 			};
 		} catch (error) {
@@ -70,21 +71,21 @@ const applicationService = {
 				skills,
 			});
 
-			const formattedDate = (date) => moment(date, 'MM/DD/YYYY').toDate();
-			if (working_exp.length > 0) {
-				const workingExperiences = await WorkExperienceModel.create(
-					working_exp.map((exp) => ({
-						...exp,
-						startDate: formattedDate(exp.startDate), //get MM/DD/YYYY format from client
-						endDate: formattedDate(exp.endDate),
-						application: application._id, // Assuming application._id is the ID of the newly created application
-					}))
-				);
+			// const formattedDate = (date) => moment(date, 'MM/DD/YYYY').toDate();
+			// if (working_exp.length > 0) {
+			// 	const workingExperiences = await WorkExperienceModel.create(
+			// 		working_exp.map((exp) => ({
+			// 			...exp,
+			// 			startDate: formattedDate(exp.startDate), //get MM/DD/YYYY format from client
+			// 			endDate: formattedDate(exp.endDate),
+			// 			application: application._id, // Assuming application._id is the ID of the newly created application
+			// 		}))
+			// 	);
 
-				if (!workingExperiences) {
-					throw new Error('Create working exp failed');
-				}
-			}
+			// 	if (!workingExperiences) {
+			// 		throw new Error('Create working exp failed');
+			// 	}
+			// }
 
 			if (!application) {
 				throw new Error('Create application failed');

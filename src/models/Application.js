@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const WorkExperienceModel = require('./Experience');
 
 const { Schema, model } = mongoose;
 
@@ -27,10 +26,12 @@ const applicationSchema = new Schema(
 			required: true,
 			enum: ['Male', 'Female', 'Other'],
 		},
-		working_exp: {
-			type: Schema.Types.ObjectId,
-			ref: 'WorkExperience',
-		},
+		working_exp: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'WorkExperience',
+			},
+		],
 		education: {
 			type: String,
 		},

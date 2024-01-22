@@ -3,9 +3,8 @@ const { Schema, model } = mongoose;
 
 const workExperienceSchema = new Schema({
 	application_id: {
-		type: String,
-		required: true,
-		// ref: 'Application',
+		type: Schema.Types.ObjectId,
+		ref: 'Application',
 	},
 	companyName: {
 		type: String,
