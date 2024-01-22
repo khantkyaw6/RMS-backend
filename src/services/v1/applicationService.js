@@ -1,9 +1,6 @@
 const moment = require('moment');
 const { deleteFile } = require('../../helpers/fileHelper');
-const {
-	ApplicationModel,
-	WorkExperienceModel,
-} = require('../../models/Application');
+const ApplicationModel = require('../../models/Application');
 
 const applicationService = {
 	attributes: [
@@ -23,10 +20,7 @@ const applicationService = {
 				isDeleted: false,
 			})
 				.select(applicationService.attributes)
-				.populate({
-					path: 'working_exp',
-					options: { lean: true },
-				});
+				.populate('working_exp');
 
 			console.log(applications);
 

@@ -4,7 +4,16 @@ const moment = require('moment');
 const experienceService = {
 	index: async () => {
 		try {
-		} catch (error) {}
+			const experiences = await WorkExperienceModel.find();
+
+			return {
+				status: 200,
+				message: 'All experience list',
+				data: experiences,
+			};
+		} catch (error) {
+			throw new Error(error);
+		}
 	},
 	store: async (req) => {
 		try {

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const WorkExperienceModel = require('./Experience');
+
 const { Schema, model } = mongoose;
 
 const applicationSchema = new Schema(
@@ -28,7 +29,7 @@ const applicationSchema = new Schema(
 		},
 		working_exp: {
 			type: Schema.Types.ObjectId,
-			ref: 'WorkExperience', // Reference to the WorkExperienceModel
+			ref: 'WorkExperience',
 		},
 		education: {
 			type: String,
@@ -46,6 +47,4 @@ const applicationSchema = new Schema(
 
 const ApplicationModel = model('Application', applicationSchema);
 
-module.exports = {
-	ApplicationModel, //WorkExperienceModel
-};
+module.exports = ApplicationModel;
