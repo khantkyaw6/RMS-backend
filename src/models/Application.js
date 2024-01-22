@@ -1,23 +1,6 @@
 const mongoose = require('mongoose');
+const WorkExperienceModel = require('./Experience');
 const { Schema, model } = mongoose;
-
-const workExperienceSchema = new Schema({
-	companyName: {
-		type: String,
-		required: true,
-	},
-	startDate: {
-		type: Date,
-		required: true,
-	},
-	endDate: {
-		type: Date,
-	},
-	position: {
-		type: String,
-		required: true,
-	},
-});
 
 const applicationSchema = new Schema(
 	{
@@ -43,7 +26,10 @@ const applicationSchema = new Schema(
 			required: true,
 			enum: ['Male', 'Female', 'Other'],
 		},
-		working_exp: [workExperienceSchema],
+		working_exp: {
+			type: Schema.Types.ObjectId,
+			ref: 'WorkExperience', // Reference to the WorkExperienceModel
+		},
 		education: {
 			type: String,
 		},
@@ -59,6 +45,7 @@ const applicationSchema = new Schema(
 );
 
 const ApplicationModel = model('Application', applicationSchema);
-const WorkExperienceModel = model('WorkExperience', workExperienceSchema);
 
-module.exports = { ApplicationModel, WorkExperienceModel };
+module.exports = {
+	ApplicationModel, //WorkExperienceModel
+};

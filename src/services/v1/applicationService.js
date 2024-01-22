@@ -1,3 +1,4 @@
+const moment = require('moment');
 const { deleteFile } = require('../../helpers/fileHelper');
 const {
 	ApplicationModel,
@@ -20,7 +21,20 @@ const applicationService = {
 		try {
 			const applications = await ApplicationModel.find({
 				isDeleted: false,
-			}).select(applicationService.attributes);
+			})
+				.select(applicationService.attributes)
+				.populate({
+					path: 'working_exp',
+					options: { lean: true },
+				});
+
+			console.log(applications);
+
+			applications.forEach((application) => {
+				if (!application.working_exp) {
+					application.working_exp = [];
+				}
+			});
 
 			return {
 				status: 200,
@@ -58,24 +72,17 @@ const applicationService = {
 				phone,
 				image,
 				gender,
-				working_exp,
 				education,
 				skills,
 			});
 
-			console.log(working_exp);
-
-			const convertToIsoFormat = (dateString) => {
-				const [day, month, year] = dateString.split('/');
-				return new Date(`${year}-${month}-${day}T00:00:00Z`);
-			};
-
+			const formattedDate = (date) => moment(date, 'MM/DD/YYYY').toDate();
 			if (working_exp.length > 0) {
 				const workingExperiences = await WorkExperienceModel.create(
 					working_exp.map((exp) => ({
 						...exp,
-						startDate: convertToIsoFormat(exp.startDate),
-						endDate: convertToIsoFormat(exp.endDate),
+						startDate: formattedDate(exp.startDate), //get MM/DD/YYYY format from client
+						endDate: formattedDate(exp.endDate),
 						application: application._id, // Assuming application._id is the ID of the newly created application
 					}))
 				);

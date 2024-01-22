@@ -38,10 +38,8 @@ module.exports = {
 				.items(
 					Joi.object({
 						companyName: Joi.string().required(),
-						startDate: Joi.string()
-							.regex(/^\d{2}\/\d{2}\/\d{4}$/)
-							.required(),
-						endDate: Joi.date().required(),
+						startDate: Joi.optional(),
+						endDate: Joi.optional(),
 						position: Joi.string().required(),
 					})
 				)
