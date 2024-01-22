@@ -28,8 +28,6 @@ const authService = {
 
 			const adminUpdated = await admin.save();
 
-			console.log({ adminUpdated });
-
 			return {
 				status: 200,
 				message: 'Login success',
@@ -41,7 +39,6 @@ const authService = {
 	},
 	logout: async () => {},
 	signToken: (admin) => {
-		console.log('in signtoken');
 		return jwt.sign(
 			{ id: admin._id },
 			process.env.SECRET_KEY || 'TRUSTLINKKEY',

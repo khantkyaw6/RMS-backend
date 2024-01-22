@@ -63,15 +63,26 @@ const applicationService = {
 				skills,
 			});
 
-			const workingExperiences = await WorkExperienceModel.create(
-				working_exp.map((exp) => ({
-					...exp,
-					application: application._id, // Assuming application._id is the ID of the newly created application
-				}))
-			);
+			console.log(working_exp);
 
-			if (!workingExperiences) {
-				throw new Error('Create working exp failed');
+			const convertToIsoFormat = (dateString) => {
+				const [day, month, year] = dateString.split('/');
+				return new Date(`${year}-${month}-${day}T00:00:00Z`);
+			};
+
+			if (working_exp.length > 0) {
+				const workingExperiences = await WorkExperienceModel.create(
+					working_exp.map((exp) => ({
+						...exp,
+						startDate: convertToIsoFormat(exp.startDate),
+						endDate: convertToIsoFormat(exp.endDate),
+						application: application._id, // Assuming application._id is the ID of the newly created application
+					}))
+				);
+
+				if (!workingExperiences) {
+					throw new Error('Create working exp failed');
+				}
 			}
 
 			if (!application) {
