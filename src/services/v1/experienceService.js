@@ -69,7 +69,11 @@ const experienceService = {
 		try {
 			const { companyName, startDate, endDate, position } = req.body;
 
+			console.log(req.body);
+
 			const experience = await WorkExperienceModel.findById(experienceId);
+
+			console.log({ startDate, endDate });
 
 			if (!experience) {
 				throw new Error('Experience not found');

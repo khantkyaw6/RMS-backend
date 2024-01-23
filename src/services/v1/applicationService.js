@@ -86,9 +86,12 @@ const applicationService = {
 	},
 	show: async (req) => {
 		try {
-			const application = await ApplicationModel.findById(
-				req.params.id
-			).select(applicationService.attributes);
+			const application = await ApplicationModel.findById(req.params.id)
+				.populate(
+					'working_exp',
+					'companyName startDate endDate position'
+				)
+				.select(applicationService.attributes);
 
 			if (!application) {
 				throw new Error('Application not found!');
@@ -107,16 +110,8 @@ const applicationService = {
 		const applicationId = req.params.id;
 
 		try {
-			const {
-				name,
-				email,
-				phone,
-				image,
-				gender,
-				working_exp,
-				education,
-				skills,
-			} = req.body;
+			const { name, email, phone, image, gender, education, skills } =
+				req.body;
 			const application = await ApplicationModel.findById(applicationId);
 
 			if (!application) {
